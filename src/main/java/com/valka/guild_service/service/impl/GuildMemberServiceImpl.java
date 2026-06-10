@@ -1,6 +1,7 @@
 package com.valka.guild_service.service.impl;
 
 import bg.senpai.common.dtos.EntityAlreadyExists;
+import com.valka.guild_service.config.CacheNames;
 import com.valka.guild_service.model.dto.GuildMemberGetRequestDTO;
 import com.valka.guild_service.model.entity.Guild;
 import com.valka.guild_service.model.entity.GuildMember;
@@ -12,6 +13,8 @@ import com.valka.guild_service.service.GuildService;
 import com.valka.guild_service.model.entity.EGuildRank;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -38,6 +41,10 @@ public class GuildMemberServiceImpl {
         return guildMemberRepository.save(guildMember);
     }
 
+    @CacheEvict(
+            cacheNames = CacheNames.GUILD_MEMBER_DETAILS,
+            key = "#memberId"
+    )
     public void leaveGuildMemberFromGuild(LeaveRequestEvent event){
         UUID memberId = UUID.fromString(event.getGuildMemberId());
 
@@ -48,6 +55,10 @@ public class GuildMemberServiceImpl {
         guildMemberRepository.deleteById(memberId);
     }
 
+    @CacheEvict(
+            cacheNames = CacheNames.GUILD_MEMBER_DETAILS,
+            key = "#memberId"
+    )
     public GuildMember updateGuildMember(UpdateRequestEvent event){
         GuildMember guildMember = findById(UUID.fromString(event.getId()));
 
@@ -65,6 +76,10 @@ public class GuildMemberServiceImpl {
         return guildMemberRepository.save(guildMember);
     }
 
+    @Cacheable(
+            cacheNames = CacheNames.GUILD_MEMBER_DETAILS,
+            key = "#memberId"
+    )
     public GuildMemberGetRequestDTO getMember(UUID memberId){
         GuildMember member = findById(memberId);
 
