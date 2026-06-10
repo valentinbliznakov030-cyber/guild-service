@@ -25,7 +25,6 @@ public class Guild {
     @Column(name = "name", nullable = false, unique = true, length = 45)
     private String name;
 
-    // Връзка към външния Character Service - кой притежава гилдията
     @Column(name = "leader_character_id", nullable = false)
     private UUID leaderCharacterId;
 
