@@ -1,0 +1,31 @@
+{
+  "type": "record",
+  "name": "JoinRequestEvent",
+  "namespace": "com.valka.guild_service.model.event",
+  "fields": [
+    {
+      "name": "guildId",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "characterId",
+      "type": "string"
+    },
+    {
+      "name": "rank",
+      "type": {
+        "type": "enum",
+        "name": "EGuildRank",
+        "symbols": [
+          "LEADER",
+          "OFFICER",
+          "MEMBER"
+        ]
+      }
+    }
+  ]
+}

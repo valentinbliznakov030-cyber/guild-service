@@ -1,0 +1,32 @@
+{
+  "type": "record",
+  "name": "UpdateRequestEvent",
+  "namespace": "com.valka.guild_service.model.event",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string"
+    },
+    {
+      "name": "guildId",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "rank",
+      "type": [
+        "null",
+        {
+          "type": "enum",
+          "name": "EGuildRank",
+          "symbols": [
+            "LEADER",
+            "OFFICER",
+            "MEMBER"
+          ]
+        }
+      ],
+      "default": null
+    }
+  ]
+}

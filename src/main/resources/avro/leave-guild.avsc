@@ -1,0 +1,11 @@
+{
+  "type": "record",
+  "name": "LeaveRequestEvent",
+  "namespace": "com.valka.guild_service.model.event",
+  "fields": [
+    {
+      "name": "guildMemberId",
+      "type": "string"
+    }
+  ]
+}
