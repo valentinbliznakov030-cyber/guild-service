@@ -1,6 +1,7 @@
 package com.valka.guild_service.service.impl;
 
 import bg.senpai.common.dtos.EntityAlreadyExists;
+import com.valka.guild_service.model.dto.GuildMemberGetRequestDTO;
 import com.valka.guild_service.model.entity.Guild;
 import com.valka.guild_service.model.entity.GuildMember;
 import com.valka.guild_service.model.event.JoinRequestEvent;
@@ -64,6 +65,15 @@ public class GuildMemberServiceImpl {
         return guildMemberRepository.save(guildMember);
     }
 
+    public GuildMemberGetRequestDTO getMember(UUID memberId){
+        GuildMember member = findById(memberId);
+
+        return GuildMemberGetRequestDTO.builder()
+                    .id(member.getId())
+                    .guild(member.getGuild())
+                    .characterId(member.getCharacterId())
+                .build();
+    }
     public GuildMember findById(UUID id){
         return guildMemberRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("GuildMember not found"));
     }
