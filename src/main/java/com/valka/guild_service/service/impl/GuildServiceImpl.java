@@ -1,5 +1,6 @@
 package com.valka.guild_service.service.impl;
 
+import com.valka.guild_service.kafka.producer.GuildMemberProducer;
 import com.valka.guild_service.model.entity.Guild;
 import com.valka.guild_service.model.entity.GuildMember;
 import com.valka.guild_service.model.event.JoinRequestEvent;
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class GuildServiceImpl {
     private final GuildRepository guildRepository;
     private final GuildService guildService;
+    private final GuildMemberProducer producer;
 
     public Guild findById(UUID guildId){
         return guildRepository.findById(guildId)
