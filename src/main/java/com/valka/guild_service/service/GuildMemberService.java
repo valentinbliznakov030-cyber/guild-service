@@ -1,9 +1,9 @@
 package com.valka.guild_service.service;
 
 import com.valka.guild_service.config.CacheNames;
-import com.valka.guild_service.model.dto.JoinRequestDTO;
-import com.valka.guild_service.model.dto.LeaveRequestDTO;
-import com.valka.guild_service.model.dto.UpdateRequestDTO;
+import com.valka.guild_service.model.dto.guildmember.JoinRequestDTO;
+import com.valka.guild_service.model.dto.guildmember.LeaveRequestDTO;
+import com.valka.guild_service.model.dto.guildmember.UpdateRequestDTO;
 import com.valka.guild_service.model.entity.GuildMember;
 import com.valka.guild_service.model.event.JoinRequestEvent;
 import com.valka.guild_service.model.event.LeaveRequestEvent;

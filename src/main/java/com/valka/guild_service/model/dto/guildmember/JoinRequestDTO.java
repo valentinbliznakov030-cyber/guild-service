@@ -1,4 +1,4 @@
-package com.valka.guild_service.model.dto;
+package com.valka.guild_service.model.dto.guildmember;
 
 import lombok.*;
 
@@ -9,8 +9,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UpdateRequestDTO {
-    private UUID id;
+public class JoinRequestDTO {
     private UUID guildId;
+    private String name;
+    private UUID characterId;
     private String rank;
 }

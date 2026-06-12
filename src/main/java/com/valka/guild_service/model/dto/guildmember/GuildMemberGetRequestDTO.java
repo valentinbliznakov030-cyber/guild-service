@@ -1,4 +1,4 @@
-package com.valka.guild_service.model.dto;
+package com.valka.guild_service.model.dto.guildmember;
 
 import com.valka.guild_service.model.entity.Guild;
 import lombok.AllArgsConstructor;

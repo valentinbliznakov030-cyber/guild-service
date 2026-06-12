@@ -3,10 +3,10 @@ package com.valka.guild_service.service.impl;
 import bg.senpai.common.dtos.EntityAlreadyExists;
 import com.valka.guild_service.config.CacheNames;
 import com.valka.guild_service.kafka.producer.GuildMemberProducer;
-import com.valka.guild_service.model.dto.GuildMemberGetRequestDTO;
-import com.valka.guild_service.model.dto.JoinRequestDTO;
-import com.valka.guild_service.model.dto.LeaveRequestDTO;
-import com.valka.guild_service.model.dto.UpdateRequestDTO;
+import com.valka.guild_service.model.dto.guildmember.GuildMemberGetRequestDTO;
+import com.valka.guild_service.model.dto.guildmember.JoinRequestDTO;
+import com.valka.guild_service.model.dto.guildmember.LeaveRequestDTO;
+import com.valka.guild_service.model.dto.guildmember.UpdateRequestDTO;
 import com.valka.guild_service.model.entity.Guild;
 import com.valka.guild_service.model.entity.GuildMember;
 import com.valka.guild_service.model.event.JoinRequestEvent;
@@ -50,7 +50,7 @@ public class GuildMemberServiceImpl implements GuildMemberService {
 
     @CacheEvict(
             cacheNames = CacheNames.GUILD_MEMBER_DETAILS,
-            key = "#memberId"
+            key = "#event.guildMemberId"
     )
     @Override
     public void leaveGuildMemberFromGuild(LeaveRequestEvent event){
@@ -65,7 +65,7 @@ public class GuildMemberServiceImpl implements GuildMemberService {
 
     @CacheEvict(
             cacheNames = CacheNames.GUILD_MEMBER_DETAILS,
-            key = "#memberId"
+            key = "#event.id"
     )
     @Override
     public GuildMember updateGuildMember(UpdateRequestEvent event){
