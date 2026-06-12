@@ -3,6 +3,7 @@ package com.valka.guild_service.service.impl;
 import bg.senpai.common.dtos.EntityAlreadyExists;
 import com.valka.guild_service.model.entity.Guild;
 import com.valka.guild_service.model.event.GuildCreateEvent;
+import com.valka.guild_service.model.event.GuildUpdateEvent;
 import com.valka.guild_service.repository.GuildRepository;
 import com.valka.guild_service.service.GuildService;
 import jakarta.persistence.EntityNotFoundException;
@@ -31,6 +32,27 @@ public class GuildServiceImpl implements GuildService {
                 .leaderCharacterId(leaderCharacterId)
                 .description(event.getDescription())
                 .build();
+
+        return guildRepository.save(guild);
+    }
+
+    public Guild updateGuild(GuildUpdateEvent event){
+        Guild guild = findById(UUID.fromString(event.getGuildId()));
+
+        String name = event.getName();
+        if(name != null && !name.isBlank()){
+            guild.setName(name);
+        }
+
+        String description = event.getDescription();
+        if( description != null && !description.isBlank() ){
+            guild.setDescription(description);
+        }
+
+        String leaderCharacterId = event.getLeaderCharacterId();
+        if(leaderCharacterId != null && !leaderCharacterId.isBlank()  ){
+            guild.setLeaderCharacterId(UUID.fromString(leaderCharacterId));
+        }
 
         return guildRepository.save(guild);
     }

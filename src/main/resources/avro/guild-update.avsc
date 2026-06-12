@@ -1,0 +1,26 @@
+{
+  "type": "record",
+  "name": "GuildUpdateEvent",
+  "namespace": "com.valka.guild_service.model.event",
+  "fields": [
+    {
+      "name": "guildId",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "leaderCharacterId",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": ["null", "string"],
+      "default": null
+    }
+  ]
+}
