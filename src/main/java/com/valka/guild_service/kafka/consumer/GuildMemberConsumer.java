@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @KafkaListener(
-        topics = "guild-member-events",
+        topics = "${app.kafka.topics.guild-member-events}",
         groupId = "guild-service-group"
 )
 @RequiredArgsConstructor
