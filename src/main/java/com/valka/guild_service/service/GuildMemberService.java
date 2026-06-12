@@ -3,11 +3,8 @@ package com.valka.guild_service.service;
 import com.valka.guild_service.config.CacheNames;
 import com.valka.guild_service.model.dto.guildmember.GuildMemberGetRequestDTO;
 import com.valka.guild_service.model.dto.guildmember.JoinRequestDTO;
-import com.valka.guild_service.model.dto.guildmember.LeaveRequestDTO;
 import com.valka.guild_service.model.dto.guildmember.UpdateRequestDTO;
-import com.valka.guild_service.model.entity.Guild;
 import com.valka.guild_service.model.entity.GuildMember;
-import com.valka.guild_service.model.event.GuildUpdateEvent;
 import com.valka.guild_service.model.event.JoinRequestEvent;
 import com.valka.guild_service.model.event.LeaveRequestEvent;
 import com.valka.guild_service.model.event.UpdateRequestEvent;
@@ -21,9 +18,9 @@ public interface GuildMemberService {
 
     void sendJoinRequest(JoinRequestDTO dto);
 
-    void sendLeaveRequest(LeaveRequestDTO dto);
+    void sendLeaveRequest(UUID dto);
 
-    void sendUpdateRequest(UpdateRequestDTO dto);
+    void sendUpdateRequest(UUID userId, UpdateRequestDTO dto);
 
     @CacheEvict(
             cacheNames = CacheNames.GUILD_MEMBER_DETAILS,

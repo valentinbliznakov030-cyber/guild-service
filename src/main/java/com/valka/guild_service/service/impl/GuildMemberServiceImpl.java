@@ -5,7 +5,6 @@ import com.valka.guild_service.config.CacheNames;
 import com.valka.guild_service.kafka.producer.GuildMemberProducer;
 import com.valka.guild_service.model.dto.guildmember.GuildMemberGetRequestDTO;
 import com.valka.guild_service.model.dto.guildmember.JoinRequestDTO;
-import com.valka.guild_service.model.dto.guildmember.LeaveRequestDTO;
 import com.valka.guild_service.model.dto.guildmember.UpdateRequestDTO;
 import com.valka.guild_service.model.entity.Guild;
 import com.valka.guild_service.model.entity.GuildMember;
@@ -18,6 +17,7 @@ import com.valka.guild_service.service.GuildService;
 import com.valka.guild_service.model.entity.EGuildRank;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -115,17 +115,17 @@ public class GuildMemberServiceImpl implements GuildMemberService {
         producer.sendJoinRequestEvent(event);
     }
 
-    public void sendLeaveRequest(LeaveRequestDTO dto) {
+    public void sendLeaveRequest(UUID memberId) {
         LeaveRequestEvent event = LeaveRequestEvent.newBuilder()
-                .setGuildMemberId(dto.getGuildMemberId().toString())
+                .setGuildMemberId(memberId.toString())
                 .build();
 
         producer.sendLeaveRequestEvent(event);
     }
 
-    public void sendUpdateRequest(UpdateRequestDTO dto) {
+    public void sendUpdateRequest(UUID userId, UpdateRequestDTO dto) {
         UpdateRequestEvent.Builder builder = UpdateRequestEvent.newBuilder()
-                .setId(dto.getId().toString());
+                .setId(userId.toString());
 
         if (dto.getGuildId() != null) {
             builder.setGuildId(dto.getGuildId().toString());

@@ -1,5 +1,8 @@
 package com.valka.guild_service.service;
 
+import com.valka.guild_service.model.dto.guild.GuildCreateRequestDTO;
+import com.valka.guild_service.model.dto.guild.GuildGetRequestDTO;
+import com.valka.guild_service.model.dto.guild.GuildUpdateRequestDTO;
 import com.valka.guild_service.model.entity.Guild;
 import com.valka.guild_service.model.event.GuildCreateEvent;
 import com.valka.guild_service.model.event.GuildDeleteEvent;
@@ -15,4 +18,12 @@ public interface GuildService {
     Guild findById(UUID id);
 
     void deleteGuild(GuildDeleteEvent event);
+
+    GuildGetRequestDTO getGuild(UUID guildId);
+
+    void sendCreateRequest(UUID characterId, GuildCreateRequestDTO dto);
+
+    void sendUpdateRequest(UUID leaderId, GuildUpdateRequestDTO dto);
+
+    void sendDeleteRequest(UUID guildId);
 }

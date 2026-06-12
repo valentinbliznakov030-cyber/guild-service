@@ -8,10 +8,6 @@
       "type": "string"
     },
     {
-      "name": "memberId",
-      "type": "string"
-    },
-    {
       "name": "name",
       "type": ["null", "string"],
       "default": null

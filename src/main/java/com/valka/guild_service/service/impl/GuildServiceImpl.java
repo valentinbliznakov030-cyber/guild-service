@@ -1,7 +1,10 @@
 package com.valka.guild_service.service.impl;
 
 import bg.senpai.common.dtos.EntityAlreadyExists;
+import com.valka.guild_service.kafka.producer.GuildProducer;
+import com.valka.guild_service.model.dto.guild.GuildCreateRequestDTO;
 import com.valka.guild_service.model.dto.guild.GuildGetRequestDTO;
+import com.valka.guild_service.model.dto.guild.GuildUpdateRequestDTO;
 import com.valka.guild_service.model.entity.Guild;
 import com.valka.guild_service.model.event.GuildCreateEvent;
 import com.valka.guild_service.model.event.GuildDeleteEvent;
@@ -20,6 +23,7 @@ import java.util.UUID;
 @Transactional
 public class GuildServiceImpl implements GuildService {
     private final GuildRepository guildRepository;
+    private final GuildProducer guildProducer;
 
     @Override
     public Guild createGuild(GuildCreateEvent event){
@@ -48,12 +52,12 @@ public class GuildServiceImpl implements GuildService {
         }
 
         String description = event.getDescription();
-        if( description != null && !description.isBlank() ){
+        if(description != null && !description.isBlank() ){
             guild.setDescription(description);
         }
 
         String leaderCharacterId = event.getLeaderCharacterId();
-        if(leaderCharacterId != null && !leaderCharacterId.isBlank()  ){
+        if(leaderCharacterId != null && !leaderCharacterId.isBlank()){
             guild.setLeaderCharacterId(UUID.fromString(leaderCharacterId));
         }
 
@@ -72,6 +76,7 @@ public class GuildServiceImpl implements GuildService {
         guildRepository.delete(guild);
     }
 
+    @Override
     public GuildGetRequestDTO getGuild(UUID guildId){
         Guild guild = findById(guildId);
 
@@ -85,5 +90,36 @@ public class GuildServiceImpl implements GuildService {
                 .build();
 
         return dto;
+    }
+
+    @Override
+    public void sendCreateRequest(UUID characterId, GuildCreateRequestDTO dto) {
+        GuildCreateEvent event = GuildCreateEvent.newBuilder()
+                .setDescription(dto.getDescription())
+                .setName(dto.getName())
+                .setLeaderCharacterId(characterId.toString())
+                .build();
+
+        guildProducer.sendGuildCreatedEvent(event);
+    }
+
+    @Override
+    public void sendUpdateRequest(UUID leaderId, GuildUpdateRequestDTO dto) {
+        GuildUpdateEvent event = GuildUpdateEvent.newBuilder()
+                .setDescription(dto.getDescription())
+                .setGuildId(dto.getGuildId().toString())
+                .setLeaderCharacterId(leaderId.toString())
+                .build();
+
+        guildProducer.sendGuildUpdatedEvent(event);
+    }
+
+    @Override
+    public void sendDeleteRequest(UUID guildId) {
+        GuildDeleteEvent event = GuildDeleteEvent.newBuilder()
+                .setGuildId(guildId.toString())
+                .build();
+
+        guildProducer.sendGuildDeletedEvent(event);
     }
 }

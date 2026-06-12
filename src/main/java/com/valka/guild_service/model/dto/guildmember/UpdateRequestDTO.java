@@ -10,7 +10,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class UpdateRequestDTO {
-    private UUID id;
     private UUID guildId;
     private String rank;
 }
