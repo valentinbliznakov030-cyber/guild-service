@@ -89,6 +89,7 @@ public class GuildMemberServiceImpl implements GuildMemberService {
             cacheNames = CacheNames.GUILD_MEMBER_DETAILS,
             key = "#memberId"
     )
+    @Override
     public GuildMemberGetRequestDTO getMember(UUID memberId){
         GuildMember member = findById(memberId);
 
