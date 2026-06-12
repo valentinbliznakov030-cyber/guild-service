@@ -1,6 +1,7 @@
 package com.valka.guild_service.service.impl;
 
 import bg.senpai.common.dtos.EntityAlreadyExists;
+import com.valka.guild_service.model.dto.guild.GuildGetRequestDTO;
 import com.valka.guild_service.model.entity.Guild;
 import com.valka.guild_service.model.event.GuildCreateEvent;
 import com.valka.guild_service.model.event.GuildDeleteEvent;
@@ -71,5 +72,18 @@ public class GuildServiceImpl implements GuildService {
         guildRepository.delete(guild);
     }
 
+    public GuildGetRequestDTO getGuild(UUID guildId){
+        Guild guild = findById(guildId);
 
+        GuildGetRequestDTO dto = GuildGetRequestDTO.builder()
+                .name(guild.getName())
+                .guildId(guild.getId())
+                .createdAt(guild.getCreatedAt())
+                .description(guild.getDescription())
+                .leaderCharacterId(guild.getLeaderCharacterId())
+                .memberCount(guild.getMembers().size())
+                .build();
+
+        return dto;
+    }
 }
