@@ -5,7 +5,9 @@ import com.valka.guild_service.model.dto.guildmember.GuildMemberGetRequestDTO;
 import com.valka.guild_service.model.dto.guildmember.JoinRequestDTO;
 import com.valka.guild_service.model.dto.guildmember.LeaveRequestDTO;
 import com.valka.guild_service.model.dto.guildmember.UpdateRequestDTO;
+import com.valka.guild_service.model.entity.Guild;
 import com.valka.guild_service.model.entity.GuildMember;
+import com.valka.guild_service.model.event.GuildUpdateEvent;
 import com.valka.guild_service.model.event.JoinRequestEvent;
 import com.valka.guild_service.model.event.LeaveRequestEvent;
 import com.valka.guild_service.model.event.UpdateRequestEvent;
@@ -42,4 +44,5 @@ public interface GuildMemberService {
     GuildMemberGetRequestDTO getMember(UUID memberId);
 
     GuildMember findById(UUID id);
+
 }

@@ -3,6 +3,7 @@ package com.valka.guild_service.service.impl;
 import bg.senpai.common.dtos.EntityAlreadyExists;
 import com.valka.guild_service.model.entity.Guild;
 import com.valka.guild_service.model.event.GuildCreateEvent;
+import com.valka.guild_service.model.event.GuildDeleteEvent;
 import com.valka.guild_service.model.event.GuildUpdateEvent;
 import com.valka.guild_service.repository.GuildRepository;
 import com.valka.guild_service.service.GuildService;
@@ -36,6 +37,7 @@ public class GuildServiceImpl implements GuildService {
         return guildRepository.save(guild);
     }
 
+    @Override
     public Guild updateGuild(GuildUpdateEvent event){
         Guild guild = findById(UUID.fromString(event.getGuildId()));
 
@@ -61,4 +63,13 @@ public class GuildServiceImpl implements GuildService {
         return guildRepository.findById(guildId)
                 .orElseThrow(() -> new EntityNotFoundException("Guild not found"));
     }
+
+    @Override
+    public void deleteGuild(GuildDeleteEvent event){
+        Guild guild = findById(UUID.fromString(event.getGuildId()));
+
+        guildRepository.delete(guild);
+    }
+
+
 }
