@@ -1,0 +1,20 @@
+{
+  "type": "record",
+  "name": "GuildCreateEvent",
+  "namespace": "com.valka.guild_service.model.event",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "leaderCharacterId",
+      "type": "string"
+    },
+    {
+      "name": "description",
+      "type": ["null", "string"],
+      "default": null
+    }
+  ]
+}

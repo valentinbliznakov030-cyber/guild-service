@@ -8,4 +8,6 @@ import java.util.UUID;
 
 @Repository
 public interface GuildRepository  extends JpaRepository<Guild, UUID> {
+    boolean existsById(UUID id);
+    boolean existsByLeaderCharacterId(UUID id);
 }
