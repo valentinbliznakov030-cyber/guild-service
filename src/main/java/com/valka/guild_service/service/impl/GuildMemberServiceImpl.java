@@ -115,6 +115,7 @@ public class GuildMemberServiceImpl implements GuildMemberService {
         producer.sendJoinRequestEvent(event);
     }
 
+    @Override
     public void sendLeaveRequest(UUID memberId) {
         LeaveRequestEvent event = LeaveRequestEvent.newBuilder()
                 .setGuildMemberId(memberId.toString())
@@ -123,9 +124,9 @@ public class GuildMemberServiceImpl implements GuildMemberService {
         producer.sendLeaveRequestEvent(event);
     }
 
-    public void sendUpdateRequest(UUID userId, UpdateRequestDTO dto) {
+    public void sendUpdateRequest(UUID memberId, UpdateRequestDTO dto) {
         UpdateRequestEvent.Builder builder = UpdateRequestEvent.newBuilder()
-                .setId(userId.toString());
+                .setId(memberId.toString());
 
         if (dto.getGuildId() != null) {
             builder.setGuildId(dto.getGuildId().toString());

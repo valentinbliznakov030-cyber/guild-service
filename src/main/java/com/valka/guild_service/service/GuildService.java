@@ -25,5 +25,5 @@ public interface GuildService {
 
     void sendUpdateRequest(UUID leaderId, GuildUpdateRequestDTO dto);
 
-    void sendDeleteRequest(UUID guildId);
+    void sendDeleteRequest(UUID memberId, UUID guildId);
 }

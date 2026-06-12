@@ -70,8 +70,15 @@ public class GuildServiceImpl implements GuildService {
     }
 
     @Override
-    public void deleteGuild(GuildDeleteEvent event){
+    public void deleteGuild(GuildDeleteEvent event) {
         Guild guild = findById(UUID.fromString(event.getGuildId()));
+
+        UUID trueLeaderId = guild.getLeaderCharacterId();
+        UUID requesterId = UUID.fromString(event.getMemberId());
+
+        if (!trueLeaderId.equals(requesterId)) {
+            throw new IllegalArgumentException("Only the true guild leader can delete this guild!");
+        }
 
         guildRepository.delete(guild);
     }
@@ -115,9 +122,10 @@ public class GuildServiceImpl implements GuildService {
     }
 
     @Override
-    public void sendDeleteRequest(UUID guildId) {
+    public void sendDeleteRequest(UUID memberId, UUID guildId) {
         GuildDeleteEvent event = GuildDeleteEvent.newBuilder()
                 .setGuildId(guildId.toString())
+                .setMemberId(memberId.toString())
                 .build();
 
         guildProducer.sendGuildDeletedEvent(event);

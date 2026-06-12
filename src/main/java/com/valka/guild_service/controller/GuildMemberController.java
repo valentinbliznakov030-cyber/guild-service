@@ -33,9 +33,9 @@ public class GuildMemberController {
         return ResponseEntity.accepted().build();
     }
 
-    @DeleteMapping("/leave/{id}")
-    public ResponseEntity<Void> leaveGuild(@PathVariable UUID id) {
-        guildMemberService.sendLeaveRequest(id);
+    @DeleteMapping()
+    public ResponseEntity<Void> leaveGuild(@AuthenticationPrincipal MemberData memberData) {
+        guildMemberService.sendLeaveRequest(memberData.getUserId());
 
         return ResponseEntity.accepted().build();
     }
