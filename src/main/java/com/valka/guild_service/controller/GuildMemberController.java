@@ -1,7 +1,8 @@
 package com.valka.guild_service.controller;
 
 import com.valka.guild_service.model.dto.guildmember.JoinRequestDTO;
-import com.valka.guild_service.model.entity.GuildMember;
+import com.valka.guild_service.model.dto.guildmember.LeaveRequestDTO;
+import com.valka.guild_service.model.dto.guildmember.UpdateRequestDTO;
 import com.valka.guild_service.service.GuildMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import com.valka.guild_service.model.dto.guildmember.GuildMemberGetRequestDTO;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/guild-member")
-public class GuildController {
+public class GuildMemberController {
     private final GuildMemberService guildMemberService;
 
     @GetMapping("/{id}")
@@ -26,6 +27,19 @@ public class GuildController {
     public ResponseEntity<Void> joinGuild(@RequestBody JoinRequestDTO dto) {
         guildMemberService.sendJoinRequest(dto);
 
+        return ResponseEntity.accepted().build();
+    }
+
+    @DeleteMapping("/leave")
+    public ResponseEntity<Void> leaveGuild(@RequestBody LeaveRequestDTO dto) {
+        guildMemberService.sendLeaveRequest(dto);
+
+        return ResponseEntity.accepted().build();
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Void> updateMember(@RequestBody UpdateRequestDTO dto) {
+        guildMemberService.sendUpdateRequest(dto);
         return ResponseEntity.accepted().build();
     }
 }
