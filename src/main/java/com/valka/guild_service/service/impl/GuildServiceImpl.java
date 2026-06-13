@@ -1,6 +1,7 @@
 package com.valka.guild_service.service.impl;
 
 import bg.senpai.common.dtos.EntityAlreadyExists;
+import com.valka.guild_service.config.CacheNames;
 import com.valka.guild_service.kafka.producer.GuildProducer;
 import com.valka.guild_service.model.dto.guild.GuildCreateRequestDTO;
 import com.valka.guild_service.model.dto.guild.GuildGetRequestDTO;
@@ -46,7 +47,7 @@ public class GuildServiceImpl implements GuildService {
 
     @Override
     @CacheEvict(
-            cacheNames = "${app.cache.guild-details}",
+            cacheNames = CacheNames.GUILD_DETAILS,
             key = "#guildId"
     )
     public Guild updateGuild(GuildUpdateEvent event){
@@ -77,7 +78,7 @@ public class GuildServiceImpl implements GuildService {
 
     @Override
     @CacheEvict(
-            cacheNames = "${app.cache.guild-details}",
+            cacheNames = CacheNames.GUILD_DETAILS,
             key = "#guildId"
     )
     public void deleteGuild(GuildDeleteEvent event) {
@@ -87,7 +88,7 @@ public class GuildServiceImpl implements GuildService {
     }
 
     @Cacheable(
-            cacheNames = "${app.cache.guild-details}",
+            cacheNames = CacheNames.GUILD_DETAILS,
             key = "#guildId"
     )
     @Override

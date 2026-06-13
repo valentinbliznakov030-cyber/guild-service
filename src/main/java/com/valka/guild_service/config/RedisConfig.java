@@ -55,7 +55,11 @@ public class RedisConfig {
                 .cacheDefaults(defaultConfig)
                 .withInitialCacheConfigurations(Collections.singletonMap(
                         CacheNames.GUILD_MEMBER_DETAILS,
-                        defaultConfig.entryTtl(Duration.ofMinutes(20))
+                        defaultConfig.entryTtl(Duration.ofMinutes(10))
+                ))
+                .withInitialCacheConfigurations(Collections.singletonMap(
+                        CacheNames.GUILD_DETAILS,
+                        defaultConfig.entryTtl(Duration.ofMinutes(30))
                 ))
                 .build();
     }
