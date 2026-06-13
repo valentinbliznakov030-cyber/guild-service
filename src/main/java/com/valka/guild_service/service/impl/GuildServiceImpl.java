@@ -73,13 +73,6 @@ public class GuildServiceImpl implements GuildService {
     public void deleteGuild(GuildDeleteEvent event) {
         Guild guild = findById(UUID.fromString(event.getGuildId()));
 
-        UUID trueLeaderId = guild.getLeaderCharacterId();
-        UUID requesterId = UUID.fromString(event.getMemberId());
-
-        if (!trueLeaderId.equals(requesterId)) {
-            throw new IllegalArgumentException("Only the true guild leader can delete this guild!");
-        }
-
         guildRepository.delete(guild);
     }
 
