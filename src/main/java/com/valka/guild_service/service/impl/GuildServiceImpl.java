@@ -13,6 +13,8 @@ import com.valka.guild_service.repository.GuildRepository;
 import com.valka.guild_service.service.GuildService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +45,10 @@ public class GuildServiceImpl implements GuildService {
     }
 
     @Override
+    @CacheEvict(
+            cacheNames = "${app.cache.guild-details}",
+            key = "#guildId"
+    )
     public Guild updateGuild(GuildUpdateEvent event){
         Guild guild = findById(UUID.fromString(event.getGuildId()));
 
@@ -70,12 +76,20 @@ public class GuildServiceImpl implements GuildService {
     }
 
     @Override
+    @CacheEvict(
+            cacheNames = "${app.cache.guild-details}",
+            key = "#guildId"
+    )
     public void deleteGuild(GuildDeleteEvent event) {
         Guild guild = findById(UUID.fromString(event.getGuildId()));
 
         guildRepository.delete(guild);
     }
 
+    @Cacheable(
+            cacheNames = "${app.cache.guild-details}",
+            key = "#guildId"
+    )
     @Override
     public GuildGetRequestDTO getGuild(UUID guildId){
         Guild guild = findById(guildId);
