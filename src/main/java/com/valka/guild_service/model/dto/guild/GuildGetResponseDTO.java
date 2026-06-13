@@ -10,7 +10,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GuildGetRequestDTO {
+public class GuildGetResponseDTO {
     private UUID guildId;
     private String name;
     private UUID leaderCharacterId;

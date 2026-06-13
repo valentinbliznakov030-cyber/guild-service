@@ -25,9 +25,9 @@ public class RedisConfig {
         objectMapper.registerModule(new JavaTimeModule());
 
         BasicPolymorphicTypeValidator validator = BasicPolymorphicTypeValidator.builder()
-                    .allowIfBaseType("com.valka")
-                    .allowIfBaseType("java.util")
-                    .allowIfBaseType("org.springframework.data.domain")
+                .allowIfBaseType("com.valka")
+                .allowIfBaseType("java.util")
+                .allowIfBaseType("org.springframework.data.domain")
                 .build();
 
         objectMapper.activateDefaultTyping(

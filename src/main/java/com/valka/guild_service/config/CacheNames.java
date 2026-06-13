@@ -6,5 +6,5 @@ public final class CacheNames {
 
     public static final String GUILD_MEMBER_DETAILS = "guild-member-details";
     public static final String GUILD_DETAILS = "guild-details";
-    public static final String JOIN_REQUESTS = "join-requests";
+    public static final String GUILD_PAGED_MEMBERS = "guild-paged-members";
 }

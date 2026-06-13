@@ -4,7 +4,7 @@ import bg.senpai.common.dtos.EntityAlreadyExists;
 import com.valka.guild_service.config.CacheNames;
 import com.valka.guild_service.kafka.producer.GuildProducer;
 import com.valka.guild_service.model.dto.guild.GuildCreateRequestDTO;
-import com.valka.guild_service.model.dto.guild.GuildGetRequestDTO;
+import com.valka.guild_service.model.dto.guild.GuildGetResponseDTO;
 import com.valka.guild_service.model.dto.guild.GuildUpdateRequestDTO;
 import com.valka.guild_service.model.entity.Guild;
 import com.valka.guild_service.model.event.GuildCreateEvent;
@@ -92,10 +92,10 @@ public class GuildServiceImpl implements GuildService {
             key = "#guildId"
     )
     @Override
-    public GuildGetRequestDTO getGuild(UUID guildId){
+    public GuildGetResponseDTO getGuild(UUID guildId){
         Guild guild = findById(guildId);
 
-        GuildGetRequestDTO dto = GuildGetRequestDTO.builder()
+        GuildGetResponseDTO dto = GuildGetResponseDTO.builder()
                 .name(guild.getName())
                 .guildId(guild.getId())
                 .createdAt(guild.getCreatedAt())

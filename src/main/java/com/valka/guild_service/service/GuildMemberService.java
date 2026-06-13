@@ -1,7 +1,8 @@
 package com.valka.guild_service.service;
 
 import com.valka.guild_service.config.CacheNames;
-import com.valka.guild_service.model.dto.guildmember.GuildMemberGetRequestDTO;
+import com.valka.guild_service.model.dto.guildmember.GuildMemberDetailsResponseDTO;
+import com.valka.guild_service.model.dto.guildmember.GuildMemberResponseDTO;
 import com.valka.guild_service.model.dto.guildmember.JoinRequestDTO;
 import com.valka.guild_service.model.dto.guildmember.UpdateRequestDTO;
 import com.valka.guild_service.model.entity.GuildMember;
@@ -10,6 +11,7 @@ import com.valka.guild_service.model.event.LeaveRequestEvent;
 import com.valka.guild_service.model.event.UpdateRequestEvent;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Pageable;
 
 import java.util.UUID;
 
@@ -38,8 +40,9 @@ public interface GuildMemberService {
             cacheNames = CacheNames.GUILD_MEMBER_DETAILS,
             key = "#memberId"
     )
-    GuildMemberGetRequestDTO getMember(UUID memberId);
+    GuildMemberResponseDTO getMember(UUID memberId);
 
     GuildMember findById(UUID id);
 
+    GuildMemberDetailsResponseDTO getGuildMemberDetails(UUID guildId, Pageable pageable);
 }

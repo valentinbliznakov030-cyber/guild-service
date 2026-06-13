@@ -3,7 +3,9 @@ package com.valka.guild_service.service.impl;
 import bg.senpai.common.dtos.EntityAlreadyExists;
 import com.valka.guild_service.config.CacheNames;
 import com.valka.guild_service.kafka.producer.GuildMemberProducer;
-import com.valka.guild_service.model.dto.guildmember.GuildMemberGetRequestDTO;
+import com.valka.guild_service.model.dto.PageResponse;
+import com.valka.guild_service.model.dto.guildmember.GuildMemberDetailsResponseDTO;
+import com.valka.guild_service.model.dto.guildmember.GuildMemberResponseDTO;
 import com.valka.guild_service.model.dto.guildmember.JoinRequestDTO;
 import com.valka.guild_service.model.dto.guildmember.UpdateRequestDTO;
 import com.valka.guild_service.model.entity.Guild;
@@ -17,11 +19,15 @@ import com.valka.guild_service.service.GuildService;
 import com.valka.guild_service.model.entity.EGuildRank;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -30,6 +36,7 @@ public class GuildMemberServiceImpl implements GuildMemberService {
     private final GuildService guildService;
     private final GuildMemberRepository guildMemberRepository;
     private final GuildMemberProducer producer;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public GuildMember joinGuild(JoinRequestEvent event){
@@ -90,12 +97,12 @@ public class GuildMemberServiceImpl implements GuildMemberService {
             key = "#memberId"
     )
     @Override
-    public GuildMemberGetRequestDTO getMember(UUID memberId){
+    public GuildMemberResponseDTO getMember(UUID memberId){
         GuildMember member = findById(memberId);
 
-        return GuildMemberGetRequestDTO.builder()
+        return GuildMemberResponseDTO.builder()
                     .id(member.getId())
-                    .guild(member.getGuild())
+                    .guildId(member.getGuild().getId())
                     .characterId(member.getCharacterId())
                 .build();
     }
@@ -140,4 +147,38 @@ public class GuildMemberServiceImpl implements GuildMemberService {
 
         producer.sendUpdateRequestEvent(event);
     }
+
+
+    @Override
+    @Cacheable(
+            cacheNames = CacheNames.GUILD_PAGED_MEMBERS,
+            key = "#guildId + ':' + #pageable.pageNumber + ':' + #pageable.pageSize"
+    )
+    public GuildMemberDetailsResponseDTO getGuildMemberDetails(UUID guildId, Pageable pageable){
+        Page<GuildMember> guildMembers = guildMemberRepository.findByGuildId(guildId, pageable);
+
+        PageResponse pageResponse = PageResponse.from(guildMembers);
+
+        List<GuildMemberResponseDTO> guildMemberDtos = guildMembers
+                .map(m -> GuildMemberResponseDTO
+                                .builder()
+                                .id(m.getId())
+                                .rank(m.getRank().name())
+                                .guildId(m.getGuild().getId())
+                                .characterId(m.getCharacterId())
+                                .build()
+                ).toList();
+
+        return new GuildMemberDetailsResponseDTO(pageResponse, guildMemberDtos);
+    }
+
+    private void removeCache(UUID guildId){
+        String pattern = CacheNames.GUILD_PAGED_MEMBERS + "::" + guildId + "*";
+
+        Set<String> keys = redisTemplate.keys(pattern);
+        if (!keys.isEmpty()) {
+            redisTemplate.delete(keys);
+        }
+    }
+
 }
