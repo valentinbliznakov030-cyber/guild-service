@@ -113,9 +113,10 @@ public class GuildServiceImpl implements GuildService {
     @Override
     public void sendUpdateRequest(UUID leaderId, GuildUpdateRequestDTO dto) {
         GuildUpdateEvent event = GuildUpdateEvent.newBuilder()
+                .setMemberId(leaderId.toString())
                 .setDescription(dto.getDescription())
                 .setGuildId(dto.getGuildId().toString())
-                .setLeaderCharacterId(leaderId.toString())
+                .setLeaderCharacterId(dto.getLeaderCharacterId().toString())
                 .build();
 
         guildProducer.sendGuildUpdatedEvent(event);

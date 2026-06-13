@@ -13,6 +13,10 @@
       "default": null
     },
     {
+      "name": "memberId",
+      "type": "string"
+    },
+    {
       "name": "leaderCharacterId",
       "type": ["null", "string"],
       "default": null

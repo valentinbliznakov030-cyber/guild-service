@@ -13,5 +13,6 @@ public class GuildUpdateRequestDTO {
     private UUID guildId;
     private String name;
     private String description;
+    private UUID leaderCharacterId;
     private int level;
 }
